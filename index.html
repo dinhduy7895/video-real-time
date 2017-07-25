@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+    <title>HTML5 Audio Tutorial</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    
+    
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="js/js.js"></script>
+    <script type="text/javascript" src="js/html5slider.js"></script>
+        <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+
+</head>
+<body class='bodyVideo'>
+ 
+<h1>HTML 5 Audio Player</h1>
+
+<section id="wrapper">
+    <div class="videoContainer" id="1">  
+        <video  id="playerVideo" controls preload="auto" poster="https://s.cdpn.io/6035/vp_poster.jpg" width="380" >
+            <source src="1.mp4" type="video/mp4" />
+            <p>Your browser does not support the video tag.</p>
+        </video>
+        <div class="caption">Prometheus</div>
+        <div class="control" >
+            <div class="btmControl">
+                <div class="btnPlay buttonVideo" title="Play/Pause video"><span class="icon-play"></span></div>
+                <div class="progressBar">
+                    <div class="progressTime">
+                        <span class="bufferBar"></span>
+                        <span class="timeBar"></span>
+                    </div>
+                </div>
+                <!--<div class="volume" title="Set volume">
+                    <span class="volumeBar"></span>
+                </div>-->
+                <div class="sound sound2 buttonVideo" title="Mute/Unmute sound"><span class="icon-sound"></span></div>
+                <div class="btnFS buttonVideo" title="Switch to full screen"><span class="icon-fullscreen"></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="videoContainer" id="2">  
+        <video  id="playerVideo" controls preload="auto" poster="https://s.cdpn.io/6035/vp_poster.jpg" width="380" >
+            <source src="2.mp4" type="video/mp4" />
+            <p>Your browser does not support the video tag.</p>
+        </video>
+        <div class="caption">Prometheus</div>
+        <div class="control" >
+            <div class="btmControl">
+                <div class="btnPlay buttonVideo" title="Play/Pause video"><span class="icon-play"></span></div>
+                <div class="progressBar">
+                    <div class="progressTime">
+                        <span class="bufferBar"></span>
+                        <span class="timeBar"></span>
+                    </div>
+                </div>
+                <!--<div class="volume" title="Set volume">
+                    <span class="volumeBar"></span>
+                </div>-->
+                <div class="sound sound2 buttonVideo" title="Mute/Unmute sound"><span class="icon-sound"></span></div>
+                <div class="btnFS buttonVideo" title="Switch to full screen"><span class="icon-fullscreen"></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="videoContainer" id="3">  
+        <video  id="playerVideo" controls preload="auto" poster="https://s.cdpn.io/6035/vp_poster.jpg" width="380" >
+            <source src="3.mp4" type="video/mp4" />
+            <p>Your browser does not support the video tag.</p>
+        </video>
+        <div class="caption">Prometheus</div>
+        <div class="control" >
+            <div class="btmControl">
+                <div class="btnPlay buttonVideo" title="Play/Pause video"><span class="icon-play"></span></div>
+                <div class="progressBar">
+                    <div class="progressTime">
+                        <span class="bufferBar"></span>
+                        <span class="timeBar"></span>
+                    </div>
+                </div>
+                <!--<div class="volume" title="Set volume">
+                    <span class="volumeBar"></span>
+                </div>-->
+                <div class="sound sound2 buttonVideo" title="Mute/Unmute sound"><span class="icon-sound"></span></div>
+                <div class="btnFS buttonVideo" title="Switch to full screen"><span class="icon-fullscreen"></span></div>
+            </div>
+        </div>
+    </div>
+</section>
+  
+</body>
+</html>
