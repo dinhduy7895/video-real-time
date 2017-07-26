@@ -23,10 +23,12 @@ io.on('connection', function(socket){
 		io.to(socketIdList[0]).emit('setCurrentTime', data);
 	});
 
-	socket.on('playpause', function(id){
-		socket.broadcast.emit('playpause',id);
+	socket.on('play', function(id){
+		socket.broadcast.emit('play',id);
 	});
-
+	socket.on('pause', function(id){
+		socket.broadcast.emit('pause',id);
+	});
 	socket.on('seek', function(x, videoId){
 		socket.broadcast.emit('seek',x, videoId);
 	});

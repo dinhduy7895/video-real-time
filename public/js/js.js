@@ -80,7 +80,6 @@ $(document).ready(function(){
 			//CONTROLS EVENTS
 			//video screen and play button clicked
 			video.on('click', function() {
-				socket.emit('playpause', id);
 				 playpause(id); 
 			} );	
 				//VIDEO EVENTS
@@ -122,36 +121,45 @@ $(document).ready(function(){
 	}	
 	
 	$('.btnPlay').on('click', function(e) {
-		socket.emit('playpause', getIdVideo(e));
 		playpause(getIdVideo(e)); 
 	});
 
 	var playpause = function(id) {
 		var video = videos[id];
 		if(video[0].paused || video[0].ended) { //stop
-			for(var i = 0 ; i < listVideo.length; i++){
-				var videoId = $(listVideo[i]).attr('id');
-				if(id != videoId){
-					$('#'+videoId+' .btnPlay').removeClass('paused');
-					$('#'+videoId+' .btnPlay').find('.icon-pause').removeClass('icon-pause').addClass('icon-play');
-					videos[videoId][0].pause();
-				}
-				else {
-					$('#'+id+' .btnPlay').addClass('paused');
-					$('#'+id+' .btnPlay').find('.icon-play').addClass('icon-pause').removeClass('icon-play');
-					video[0].play();
-				}		
-			}
-			
+			socket.emit('play', id);
+			playing(id);	
 		}
 		else { //playing
-			$('#'+id+' .btnPlay').removeClass('paused');
-			$('#'+id+' .btnPlay').find('.icon-pause').removeClass('icon-pause').addClass('icon-play');
-			video[0].pause();
+			socket.emit('pause', id);
+			paused(id);
 		}
 	};
 
+	var playing = function(id){
+		var video = videos[id];
+		for(var i = 0 ; i < listVideo.length; i++){
+			var videoId = $(listVideo[i]).attr('id');
+			if(id != videoId){
+				$('#'+videoId+' .btnPlay').removeClass('paused');
+				$('#'+videoId+' .btnPlay').find('.icon-pause').removeClass('icon-pause').addClass('icon-play');
+				videos[videoId][0].pause();
+			}
+			else {
+				$('#'+id+' .btnPlay').addClass('paused');
+				$('#'+id+' .btnPlay').find('.icon-play').addClass('icon-pause').removeClass('icon-play');
+				video[0].play();
+			}		
+		}
+	};
 	
+	var paused = function(id){
+		var video = videos[id];
+		$('#'+id+' .btnPlay').removeClass('paused');
+		$('#'+id+' .btnPlay').find('.icon-pause').removeClass('icon-pause').addClass('icon-play');
+		video[0].pause();
+	};
+
 	//fullscreen button clicked
 	$('.btnFS').on('click', function(e) {
 		var videoId = getIdVideo(e);
@@ -189,35 +197,25 @@ $(document).ready(function(){
 	$('.progressTime').on('mousedown', function(e) {
 		timeDrag = true;
 		var videoId = getIdVideo(e);
-		socket.emit('seek',e.pageX, videoId );
-		updatebar(e.pageX, videoId);
+		var percentage = getPercentOfTime(e.pageX, videoId);
+		socket.emit('seek',percentage, videoId );
+		updatebar(percentage, videoId);
 	});
 	$(document).on('mouseup', function(e) {
 		if(timeDrag) {
-			var videoId = getIdVideo(e);
 			timeDrag = false;
-			socket.emit('seek',e.pageX, videoId );
-			updatebar(e.pageX, videoId);
+			var videoId = getIdVideo(e);
+			var percentage = getPercentOfTime(e.pageX, videoId);
+			socket.emit('seek',percentage, videoId );
+			updatebar(percentage, videoId);
 		}
 	});
-	// $(document).on('mousemove', function(e) {
-	// 	if(timeDrag) {
-	// 		var videoId = getIdVideo(e);
-	// 		socket.emit('seek',e.pageX, videoId );
-	// 		updatebar(e.pageX, videoId);
-	// 	}
-	// });
-	var updatebar = function(x, videoId) {
-		var video = videos[videoId];
-		var progress = $('#'+videoId+' .progressTime');
-		
+	var updatebar = function(percentage, videoId) {
+		var video = videos[videoId];		
 		//calculate drag position
 		//and update video currenttime
 		//as well as progress bar
 		var maxduration = video[0].duration;
-		var position = x - progress.offset().left;
-		var percentage = 100 * position / progress.width();
-		console.log(progress.offset());
 		if(percentage > 100) {
 			percentage = 100;
 		}
@@ -228,6 +226,13 @@ $(document).ready(function(){
 		video[0].currentTime = maxduration * percentage / 100;
 	};
 
+	function getPercentOfTime(x, videoId){
+		var video = videos[videoId];
+		var progress = $('#'+videoId+' .progressTime');
+		var position = x - progress.offset().left;
+		var percentage = 100 * position / progress.width();
+		return percentage;
+	}
 	//VOLUME BAR
 	//volume bar event
 	var volumeDrag = false;
@@ -332,8 +337,11 @@ $(document).ready(function(){
 				
 		}
 	})
-	socket.on('playpause',function(videoId){
-		playpause(videoId);
+	socket.on('play',function(videoId){
+		playing(videoId);
+	});	
+	socket.on('pause',function(videoId){
+		paused(videoId);
 	});	
 	socket.on('seek',function(x, videoId){
 		$('#'+videoId+' .control').stop().fadeIn();
